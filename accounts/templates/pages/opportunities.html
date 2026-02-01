@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %}Opportunities | Coop Station{% endblock %}
+
+{% block content %}
+
+<!-- ✅ Full-page wrapper (fixes the white empty space at the bottom) -->
+<div class="min-vh-100 d-flex flex-column">
+
+    <!-- Header (same style as your app) -->
+    <header class="nav-dark sticky-top">
+        <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
+
+            <!-- Left: Logo -->
+            <div class="d-flex align-items-center gap-3">
+                <a class="d-flex align-items-center gap-2 text-decoration-none" href="{% url 'home' %}">
+                    <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
+                        <span class="fw-bold">CS</span>
+                    </div>
+                    <span class="fw-extrabold text-white fs-5" style="font-weight: 900;">Coop Station</span>
+                </a>
+
+                <!-- Nav links -->
+                <nav class="d-none d-md-flex align-items-center gap-4 ms-3">
+                    <a class="nav-link-dark" href="#">Dashboard</a>
+                    <a class="nav-link-dark" href="#" style="color:#fff !important;">Opportunities</a>
+                    <a class="nav-link-dark" href="#">Leaderboard</a>
+                </nav>
+            </div>
+
+            <!-- Right: actions -->
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-neutral"
+                    style="border-color: rgba(255,255,255,.35) !important; color:#fff !important;">
+                    <i class="bi bi-bell"></i>
+                </button>
+
+                <div class="d-none d-sm-flex flex-column text-end me-2" style="line-height:1.1;">
+                    <span class="text-white fw-bold" style="font-size:.85rem;">Alex Johnson</span>
+                    <span style="font-size:.72rem; color: rgba(255,255,255,.65);">Computer Science</span>
+                </div>
+
+                <div class="rounded-circle"
+                    style="width:38px;height:38px;background: rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.14);">
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ✅ Main grows to fill space, footer sits at bottom -->
+    <main class="flex-grow-1 bg-soft py-5">
+        <div class="container">
+
+            <!-- Title -->
+            <div class="mb-4">
+                <h1 class="fw-black mb-1" style="font-weight: 900;">Coop Opportunities</h1>
+                <p class="text-secondary mb-0">Find your next university co-op placement from 250+ active listings.</p>
+            </div>
+
+            <!-- Search + Filters -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+
+                    <!-- Search -->
+                    <div class="position-relative mb-3">
+                        <i class="bi bi-search search-icon"></i>
+                        <input class="form-control form-control-lg input-icon"
+                            placeholder="Search for job titles, keywords, or companies..." />
+                    </div>
+
+                    <!-- Filter pills -->
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-mortarboard"></i> Major <i class="bi bi-chevron-down"></i>
+                        </button>
+
+                        <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-geo-alt"></i> Location <i class="bi bi-chevron-down"></i>
+                        </button>
+
+                        <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-building"></i> Company <i class="bi bi-chevron-down"></i>
+                        </button>
+
+                        <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-calendar-event"></i> Deadline <i class="bi bi-chevron-down"></i>
+                        </button>
+
+                        <div class="vr mx-2"></div>
+
+                        <button class="btn fw-bold text-brand">
+                            Clear All
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="bg-white">
+                            <tr>
+                                <th class="px-4 py-3">Company</th>
+                                <th class="px-4 py-3">Title</th>
+                                <th class="px-4 py-3">Location</th>
+                                <th class="px-4 py-3">Deadline</th>
+                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3 text-end">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Row 1 -->
+                            <tr class="op-row">
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="icon-box-sm"><i class="bi bi-building"></i></div>
+                                        <span class="fw-semibold">STC</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="fw-bold">Software Engineering Co-op</div>
+                                    <div class="text-secondary small">Full-time • 4 Months</div>
+                                </td>
+
+                                <td class="px-4 py-3 text-secondary">Remote</td>
+                                <td class="px-4 py-3 text-secondary">Dec 15, 2023</td>
+
+                                <td class="px-4 py-3">
+                                    <span class="badge-status badge-active">Active</span>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
+                                            <i class="bi bi-bookmark"></i>
+                                        </button>
+                                        <button class="btn btn-view">View Details</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="op-row">
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="icon-box-sm"><i class="bi bi-bank"></i></div>
+                                        <span class="fw-semibold">Elm</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="fw-bold">Marketing Co-op</div>
+                                    <div class="text-secondary small">Part-time • 8 Months</div>
+                                </td>
+
+                                <td class="px-4 py-3 text-secondary">New York, NY</td>
+                                <td class="px-4 py-3 fw-semibold" style="color:#8a3b12;">Nov 30, 2023</td>
+
+                                <td class="px-4 py-3">
+                                    <span class="badge-status badge-closing">Closing Soon</span>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-neutral" title="Bookmarked"
+                                            style="border-color: rgba(255,193,7,.55) !important;">
+                                            <i class="bi bi-bookmark-fill" style="color:#f0b429;"></i>
+                                        </button>
+                                        <button class="btn btn-view">View Details</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="op-row">
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="icon-box-sm"><i class="bi bi-graph-up"></i></div>
+                                        <span class="fw-semibold">BCG</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="fw-bold">Data Analysis Co-op</div>
+                                    <div class="text-secondary small">Full-time • 4 Months</div>
+                                </td>
+
+                                <td class="px-4 py-3 text-secondary">San Francisco, CA</td>
+                                <td class="px-4 py-3 text-secondary">Jan 10, 2024</td>
+
+                                <td class="px-4 py-3">
+                                    <span class="badge-status badge-active">Active</span>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
+                                            <i class="bi bi-bookmark"></i>
+                                        </button>
+                                        <button class="btn btn-view">View Details</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="op-row">
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="icon-box-sm"><i class="bi bi-brush"></i></div>
+                                        <span class="fw-semibold">PIF</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="fw-bold">UX Design Co-op</div>
+                                    <div class="text-secondary small">Full-time • 6 Months</div>
+                                </td>
+
+                                <td class="px-4 py-3 text-secondary">Austin, TX</td>
+                                <td class="px-4 py-3 text-secondary">Dec 01, 2023</td>
+
+                                <td class="px-4 py-3">
+                                    <span class="badge-status badge-active">Active</span>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
+                                            <i class="bi bi-bookmark"></i>
+                                        </button>
+                                        <button class="btn btn-view">View Details</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Row 5 -->
+                            <tr class="op-row">
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="icon-box-sm"><i class="bi bi-tools"></i></div>
+                                        <span class="fw-semibold">SITE</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="fw-bold">Project Coordination Co-op</div>
+                                    <div class="text-secondary small">Full-time • 4 Months</div>
+                                </td>
+
+                                <td class="px-4 py-3 text-secondary">Chicago, IL</td>
+                                <td class="px-4 py-3 text-secondary">Dec 20, 2023</td>
+
+                                <td class="px-4 py-3">
+                                    <span class="badge-status badge-applied">Applied</span>
+                                </td>
+
+                                <td class="px-4 py-3">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
+                                            <i class="bi bi-bookmark"></i>
+                                        </button>
+                                        <button class="btn btn-view">View Details</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 px-4 py-3 border-top"
+                    style="border-color: var(--border) !important;">
+                    <div class="text-secondary small">Showing 1 to 5 of 258 opportunities</div>
+
+                    <nav aria-label="Pagination">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#"
+                                    style="background:var(--brand-blue); border-color:var(--brand-blue);">1</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#">…</a></li>
+                            <li class="page-item"><a class="page-link" href="#">52</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer (same black footer) -->
+    <footer class="footer-dark mt-auto">
+        <div class="container py-5">
+
+            <div class="row g-4">
+
+                <div class="col-lg-5">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
+                            <span class="fw-bold">CS</span>
+                        </div>
+                        <span class="fw-bold fs-5 text-white">Coop Station</span>
+                    </div>
+
+                    <p class="footer-text mb-0" style="max-width: 26rem;">
+                        Empowering students to discover and secure their ideal co-op opportunities through centralized
+                        search, AI validation, and community collaboration.
+                    </p>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6 class="footer-title mb-3">Platform</h6>
+                    <ul class="list-unstyled d-grid gap-2 mb-0">
+                        <li><a class="footer-link" href="#">Browse Opportunities</a></li>
+                        <li><a class="footer-link" href="#">My Bookmarks</a></li>
+                        <li><a class="footer-link" href="#">Leaderboard</a></li>
+                        <li><a class="footer-link" href="#">Submit Opportunity</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6 class="footer-title mb-3">Support</h6>
+                    <ul class="list-unstyled d-grid gap-2 mb-0">
+                        <li><a class="footer-link" href="#">Help Center</a></li>
+                        <li><a class="footer-link" href="{% url 'contact_us' %}">Contact Us</a></li>
+                        <li><a class="footer-link" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                        <li><a class="footer-link" href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider my-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                <small class="footer-muted">© 2026 Coop Station. All Rights Reserved.</small>
+            </div>
+
+        </div>
+    </footer>
+
+</div>
+{% endblock %}

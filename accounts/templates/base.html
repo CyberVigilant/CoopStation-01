@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,202 +16,333 @@
   <!-- Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- HTMX -->
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 
   <style>
-    :root{
-      --brand-blue:#0077FF;
-      --brand-green:#06D6A0;
-      --brand-black:#111111;
-      --brand-soft:#F5F5F5;
-      --brand-orange:#FF8147;
+    :root {
+      --brand-blue: #0077FF;
+      --brand-green: #06D6A0;
+      --brand-black: #111111;
+      --brand-soft: #F5F5F5;
+      --brand-orange: #FF8147;
 
-      --text-muted:#6B7280;
-      --border: rgba(17,17,17,.10);
+      --text-muted: #6B7280;
+      --border: rgba(17, 17, 17, .10);
     }
 
-    body{
-      font-family:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    body {
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--brand-black);
-      background:#fff;
+      background: #fff;
     }
 
     /* Typography */
-    h1,h2,h3,h4,h5,h6{ color: var(--brand-black); }
-    p{ color: var(--text-muted); }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--brand-black);
+    }
+
+    p {
+      color: var(--text-muted);
+    }
 
     /* Helpers */
-    .bg-soft{ background: var(--brand-soft) !important; }
-    .rounded-xl{ border-radius: 1rem !important; }
-    .rounded-2xl{ border-radius: 1.25rem !important; }
+    .bg-soft {
+      background: var(--brand-soft) !important;
+    }
+
+    .rounded-xl {
+      border-radius: 1rem !important;
+    }
+
+    .rounded-2xl {
+      border-radius: 1.25rem !important;
+    }
 
     /* Brand text */
-    .text-brand{ color: var(--brand-blue) !important; }
-    .text-success-brand{ color: var(--brand-green) !important; }
+    .text-brand {
+      color: var(--brand-blue) !important;
+    }
+
+    .text-success-brand {
+      color: var(--brand-green) !important;
+    }
 
     /* Badge (University Partnered) */
-    .badge-brand{
-      background: rgba(0,119,255,.12) !important;
+    .badge-brand {
+      background: rgba(0, 119, 255, .12) !important;
       color: var(--brand-blue) !important;
-      border: 1px solid rgba(0,119,255,.18);
+      border: 1px solid rgba(0, 119, 255, .18);
       font-weight: 700;
       letter-spacing: .2px;
     }
 
     /* Logo pills */
-    .logo-pill{
-      width:40px;height:40px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
+    .logo-pill {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .12);
     }
 
     /* Navbar dark */
-    .nav-dark{
+    .nav-dark {
       background: var(--brand-black);
-      border-bottom: 1px solid rgba(255,255,255,.10);
+      border-bottom: 1px solid rgba(255, 255, 255, .10);
     }
-    .nav-link-dark{
-      color: rgba(255,255,255,.75) !important;
-      text-decoration:none;
-      font-weight:600;
+
+    .nav-link-dark {
+      color: rgba(255, 255, 255, .75) !important;
+      text-decoration: none;
+      font-weight: 600;
     }
-    .nav-link-dark:hover{
-      color:#fff !important;
+
+    .nav-link-dark:hover {
+      color: #fff !important;
     }
 
     /* Buttons */
-    .btn-cta{
+    .btn-cta {
       background: var(--brand-green) !important;
       border-color: var(--brand-green) !important;
-      color:#000000 !important;
-      font-weight:700;
+      color: #000000 !important;
+      font-weight: 700;
     }
-    .btn-cta:hover{
+
+    .btn-cta:hover {
       filter: brightness(.92);
     }
 
-    .btn-outline-neutral{
+    .btn-outline-neutral {
       background: transparent !important;
-      border: 1px solid rgba(17,17,17,.45) !important;
+      border: 1px solid rgba(17, 17, 17, .45) !important;
       color: var(--brand-black) !important;
-      font-weight:700;
-    }
-    .btn-outline-neutral:hover{
-      background: var(--brand-black) !important;
-      color:#fff !important;
-      border-color: var(--brand-black) !important;
-    }
-    /* Orange login button (navbar) */
-    .btn-login-orange{
-    background:#FF8147 !important;
-    border-color:#FF8147 !important;
-    color:#111111 !important;
-    font-weight:700;
+      font-weight: 700;
     }
 
-    .btn-login-orange:hover{
-    background:#111111 !important;
-    border-color:#111111 !important;
-    color:#ffffff !important;
+    .btn-outline-neutral:hover {
+      background: var(--brand-black) !important;
+      color: #fff !important;
+      border-color: var(--brand-black) !important;
+    }
+
+    /* Orange login button (navbar) */
+    .btn-login-orange {
+      background: #FF8147 !important;
+      border-color: #FF8147 !important;
+      color: #111111 !important;
+      font-weight: 700;
+    }
+
+    .btn-login-orange:hover {
+      background: #111111 !important;
+      border-color: #111111 !important;
+      color: #ffffff !important;
     }
 
     /* Make all main action buttons consistent */
     .btn-cta,
-    .btn-login-orange{
-    padding: 10px 22px !important;
-    border-radius: 10px !important;
-    font-size: 1rem !important;
-    line-height: 1.2 !important;
+    .btn-login-orange {
+      padding: 10px 22px !important;
+      border-radius: 10px !important;
+      font-size: 1rem !important;
+      line-height: 1.2 !important;
     }
 
-        .back-arrow{
-    width:40px;
-    height:40px;
-    border-radius:10px;
-    border:1px solid rgba(0,0,0,.12);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    color:#111111;
-    text-decoration:none;
-    font-size:20px;
-    transition:all .15s ease;
+    .back-arrow {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, .12);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #111111;
+      text-decoration: none;
+      font-size: 20px;
+      transition: all .15s ease;
     }
 
-    .back-arrow:hover{
-    background:#111111;
-    color:#ffffff;
+    .back-arrow:hover {
+      background: #111111;
+      color: #ffffff;
     }
-    
+
     /* Auth tabs (Signup / Login) */
 
     /* Segmented Auth Tabs */
 
-.auth-tabs{
-  border:2px solid #111111;
-  border-radius:12px;
-  overflow:hidden;
-  width:100%;
-}
+    .auth-tabs {
+      border: 2px solid #111111;
+      border-radius: 12px;
+      overflow: hidden;
+      width: 100%;
+    }
 
-.auth-tabs .nav-link{
-  flex:1;
-  border:none !important;
-  background:#ffffff;
-  color:#111111;
-  font-weight:600;
-  padding:10px 0;
-  border-radius:0 !important;
-}
+    .auth-tabs .nav-link {
+      flex: 1;
+      border: none !important;
+      background: #ffffff;
+      color: #111111;
+      font-weight: 600;
+      padding: 10px 0;
+      border-radius: 0 !important;
+    }
 
-.auth-tabs .nav-link.active{
-  background:#1074cc;
-  color:#ffffff;
-}
+    .auth-tabs .nav-link.active {
+      background: #1074cc;
+      color: #ffffff;
+    }
 
-.auth-tabs .nav-link:hover{
-  background:#f3f3f3;
-}
+    .auth-tabs .nav-link:hover {
+      background: #f3f3f3;
+    }
 
 
     /* Cards */
-    .card{ border-color: var(--border); }
+    .card {
+      border-color: var(--border);
+    }
 
     /* CTA panel (blue) */
-    .cta-panel{
+    .cta-panel {
       background: var(--brand-blue);
-      color:#fff;
+      color: #fff;
     }
-    .cta-panel p{ color: rgba(255,255,255,.85) !important; }
+
+    .cta-panel p {
+      color: rgba(255, 255, 255, .85) !important;
+    }
 
     /* Footer (near-black) */
-    .footer-dark{
+    .footer-dark {
       background: #0B0F14;
-      color: rgba(255,255,255,.85);
+      color: rgba(255, 255, 255, .85);
     }
-    .footer-title{
-      color:#fff;
-      font-weight:800;
+
+    .footer-title {
+      color: #fff;
+      font-weight: 800;
     }
-    .footer-text{
-      color: rgba(255,255,255,.70);
-      line-height:1.7;
+
+    .footer-text {
+      color: rgba(255, 255, 255, .70);
+      line-height: 1.7;
     }
-    .footer-link{
-      color: rgba(255,255,255,.65);
-      text-decoration:none;
+
+    .footer-link {
+      color: rgba(255, 255, 255, .65);
+      text-decoration: none;
     }
-    .footer-link:hover{
-      color:#fff;
+
+    .footer-link:hover {
+      color: #fff;
     }
-    .footer-divider{
-      border-color: rgba(255,255,255,.12);
+
+    .footer-divider {
+      border-color: rgba(255, 255, 255, .12);
     }
-    .footer-muted{
-      color: rgba(255,255,255,.45);
+
+    .footer-muted {
+      color: rgba(255, 255, 255, .45);
+    }
+
+    /* Opportunities page helpers */
+    .table thead th {
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, .55);
+      border-bottom: 1px solid var(--border) !important;
+    }
+
+    .table tbody tr.op-row:hover {
+      background: rgba(0, 119, 255, .03);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(17, 17, 17, .45);
+    }
+
+    .input-icon {
+      padding-left: 44px !important;
+    }
+
+    .badge-status {
+      font-size: .72rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .45rem .6rem;
+      border-radius: .6rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+    }
+
+    .badge-active {
+      background: rgba(6, 214, 160, .16);
+      color: #0b6b52;
+    }
+
+    .badge-closing {
+      background: rgba(255, 129, 71, .18);
+      color: #8a3b12;
+    }
+
+    .badge-applied {
+      background: rgba(0, 119, 255, .14);
+      color: #0b4fa6;
+    }
+
+    .btn-view {
+      background: var(--brand-blue) !important;
+      border-color: var(--brand-blue) !important;
+      color: #fff !important;
+      font-weight: 800;
+      border-radius: 10px !important;
+      padding: .5rem .9rem !important;
+      font-size: .85rem !important;
+    }
+
+    .btn-view:hover {
+      filter: brightness(.92);
+    }
+
+    .filter-pill {
+      background: rgba(17, 17, 17, .04) !important;
+      border: 1px solid rgba(17, 17, 17, .08) !important;
+      border-radius: 10px !important;
+      font-weight: 700;
+      color: rgba(17, 17, 17, .75) !important;
+    }
+
+    .filter-pill:hover {
+      background: rgba(17, 17, 17, .06) !important;
+    }
+
+    .icon-box-sm {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(17, 17, 17, .04);
+      border: 1px solid rgba(17, 17, 17, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(17, 17, 17, .65);
     }
   </style>
 
@@ -221,4 +353,5 @@
   {% block content %}{% endblock %}
   {% block extra_js %}{% endblock %}
 </body>
+
 </html>

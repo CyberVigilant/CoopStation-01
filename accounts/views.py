@@ -17,10 +17,13 @@ def login_view(request):
     return render(request, "pages/login.html")
 
 def signup(request):
-    return render(request, "signup.html")
+    return render(request, "pages/signup.html")
 
 def terms_of_service(request):
     return render(request, "terms-of-service.html")
 
 def privacy_policy(request):
     return render(request, "privacy-policy.html")
+
+def opportunities(request):
+    return render(request, "pages/opportunities.html")
