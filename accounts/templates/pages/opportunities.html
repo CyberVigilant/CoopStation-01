@@ -35,8 +35,28 @@
                 </button>
 
                 <div class="d-none d-sm-flex flex-column text-end me-2" style="line-height:1.1;">
-                    <span class="text-white fw-bold" style="font-size:.85rem;">Alex Johnson</span>
-                    <span style="font-size:.72rem; color: rgba(255,255,255,.65);">Computer Science</span>
+                    {% if request.user.is_authenticated %}
+
+                    <span class="text-white fw-bold" style="font-size:.85rem;">
+                        {% if student_profile and student_profile.full_name %}
+                        {{ student_profile.full_name }}
+                        {% else %}
+                        {{ request.user.get_username }}
+                        {% endif %}
+                    </span>
+
+                    <span style="font-size:.72rem; color: rgba(255,255,255,.65);">
+                        {% if student_profile and student_profile.major %}
+                        {{ student_profile.major }}
+                        {% else %}
+                        Student
+                        {% endif %}
+                    </span>
+
+                    {% else %}
+                    <span class="text-white fw-bold" style="font-size:.85rem;">Guest</span>
+                    <span style="font-size:.72rem; color: rgba(255,255,255,.65);">Not signed in</span>
+                    {% endif %}
                 </div>
 
                 <div class="rounded-circle"

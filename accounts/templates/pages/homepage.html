@@ -16,8 +16,8 @@
 
     <!-- Auth buttons -->
     <div class="d-flex align-items-center gap-2">
-      <a class="btn btn-sm btn-login-orange px-3" href="{% url 'login' %}">Login</a>
-      <a class="btn btn-sm btn-cta px-3" href="{% url 'signup' %}">Create Account</a>
+      <a class="btn btn-sm btn-login-orange px-3" href="{% url 'register' %}">Login</a>
+      <a class="btn btn-sm btn-cta px-3" href="{% url 'register' %}">Create Account</a>
     </div>
 
   </div>
@@ -35,12 +35,13 @@
         </h1>
 
         <p class="lead mt-3" style="max-width: 34rem;">
-          Leverage our AI-driven search to discover verified co-op positions tailored to your university major and career goals.
+          Leverage our AI-driven search to discover verified co-op positions tailored to your university major and
+          career goals.
         </p>
 
         <div class="d-flex flex-wrap gap-3 mt-4">
-          <a class="btn btn-lg btn-cta" href="{% url 'signup' %}">Create Account</a>
-          <a class="btn btn-sm btn-login-orange px-3" href="{% url 'login' %}">Login</a>
+          <a class="btn btn-lg btn-cta" href="{% url 'register' %}">Create Account</a>
+          <a class="btn btn-sm btn-login-orange px-3" href="{% url 'register' %}?tab=login">Login</a>
 
         </div>
 
@@ -59,7 +60,7 @@
         <div class="card shadow-sm mt-3" style="max-width: 360px;">
           <div class="card-body d-flex align-items-center gap-3">
             <div class="rounded-circle d-flex align-items-center justify-content-center text-success-brand"
-                 style="width:44px;height:44px;background:rgba(6,214,160,.15);">
+              style="width:44px;height:44px;background:rgba(6,214,160,.15);">
               ✓
             </div>
             <div>
@@ -132,11 +133,12 @@
         <div class="col-lg-8">
           <h2 class="fw-bold mb-2">Ready to start your journey?</h2>
           <p class="mb-0">
-            Join thousands of students finding their dream co-ops today. Your next career milestone is just one click away.
+            Join thousands of students finding their dream co-ops today. Your next career milestone is just one click
+            away.
           </p>
         </div>
         <div class="col-lg-4 d-flex gap-2 flex-wrap justify-content-lg-end">
-          <a class="btn btn-lg btn-cta" href="{% url 'signup' %}">Get Started Now</a>
+          <a class="btn btn-lg btn-cta" href="{% url 'register' %}?tab=signup">Get Started Now</a>
           <a class="btn btn-lg btn-outline-light" href="#">View Demo</a>
         </div>
       </div>
