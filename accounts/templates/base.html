@@ -176,8 +176,6 @@
       color: #ffffff;
     }
 
-    /* Auth tabs (Signup / Login) */
-
     /* OLD clean pills style (matches your older UI) */
     .auth-tabs {
       gap: .5rem;
@@ -201,7 +199,6 @@
     .auth-tabs .nav-link:hover {
       filter: brightness(.98);
     }
-
 
     /* Cards */
     .card {
@@ -346,7 +343,127 @@
 </head>
 
 <body>
-  {% block content %}{% endblock %}
+  <div class="min-vh-100 d-flex flex-column">
+
+    <!-- Header (global) -->
+    <header class="nav-dark sticky-top">
+      <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
+
+        <!-- Left: Logo -->
+        <div class="d-flex align-items-center gap-3">
+          <a class="d-flex align-items-center gap-2 text-decoration-none" href="{% url 'home' %}">
+            <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
+              <span class="fw-bold">CS</span>
+            </div>
+            <span class="fw-extrabold text-white fs-5" style="font-weight: 900;">Coop Station</span>
+          </a>
+
+          <!-- Nav links -->
+          <nav class="d-none d-md-flex align-items-center gap-4 ms-3">
+            <a class="nav-link-dark" href="#">Dashboard</a>
+            <a class="nav-link-dark" href="{% url 'opportunities' %}">Opportunities</a>
+            <a class="nav-link-dark" href="{% url 'leaderboard' %}">Leaderboard</a>
+          </nav>
+        </div>
+
+        <!-- Right: actions -->
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-outline-neutral"
+            style="border-color: rgba(255,255,255,.35) !important; color:#fff !important;">
+            <i class="bi bi-bell"></i>
+          </button>
+
+          <div class="d-none d-sm-flex flex-column text-end me-2" style="line-height:1.1;">
+            {% if request.user.is_authenticated %}
+
+            <span class="text-white fw-bold" style="font-size:.85rem;">
+              {% if student_profile and student_profile.full_name %}
+              {{ student_profile.full_name }}
+              {% else %}
+              {{ request.user.get_username }}
+              {% endif %}
+            </span>
+
+            <span style="font-size:.72rem; color: rgba(255,255,255,.65);">
+              {% if student_profile and student_profile.major %}
+              {{ student_profile.major }}
+              {% else %}
+              Student
+              {% endif %}
+            </span>
+
+            {% else %}
+            <span class="text-white fw-bold" style="font-size:.85rem;">Guest</span>
+            <span style="font-size:.72rem; color: rgba(255,255,255,.65);">Not signed in</span>
+            {% endif %}
+          </div>
+
+          <div class="rounded-circle"
+            style="width:38px;height:38px;background: rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.14);">
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main content (page-specific) -->
+    <main class="flex-grow-1 bg-soft py-5">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer (global) -->
+    <footer class="footer-dark mt-auto">
+      <div class="container py-5">
+
+        <div class="row g-4">
+
+          <div class="col-lg-5">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
+                <span class="fw-bold">CS</span>
+              </div>
+              <span class="fw-bold fs-5 text-white">Coop Station</span>
+            </div>
+
+            <p class="footer-text mb-0" style="max-width: 26rem;">
+              Empowering students to discover and secure their ideal co-op opportunities through centralized
+              search, AI validation, and community collaboration.
+            </p>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <h6 class="footer-title mb-3">Platform</h6>
+            <ul class="list-unstyled d-grid gap-2 mb-0">
+              <li><a class="footer-link" href="{% url 'opportunities' %}">Browse Opportunities</a></li>
+              <li><a class="footer-link" href="#">My Bookmarks</a></li>
+              <li><a class="footer-link" href="{% url 'leaderboard' %}">Leaderboard</a></li>
+              <li><a class="footer-link" href="#">Submit Opportunity</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <h6 class="footer-title mb-3">Support</h6>
+            <ul class="list-unstyled d-grid gap-2 mb-0">
+              <li><a class="footer-link" href="{% url 'about_us' %}">About Us</a></li>
+              <li><a class="footer-link" href="{% url 'contact_us' %}">Contact Us</a></li>
+              <li><a class="footer-link" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+              <li><a class="footer-link" href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <hr class="footer-divider my-4">
+
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+          <small class="footer-muted">© 2026 Coop Station. All Rights Reserved.</small>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
   {% block extra_js %}{% endblock %}
 </body>
 

@@ -58,13 +58,15 @@ def register_view(request):
 def about_us(request):
     return render(request, 'pages/about-us.html')
 def contact_us(request):
-    return render(request, "contact-us.html")
+    return render(request, "pages/contact-us.html")
 
 def terms_of_service(request):
-    return render(request, "terms-of-service.html")
+    return render(request, "pages/terms-of-service.html")
 
+def leaderboard(request):
+    return render(request, "pages/leaderboard.html")
 def privacy_policy(request):
-    return render(request, "privacy-policy.html")
+    return render(request, "pages/privacy-policy.html")
 
 from django.contrib.auth.decorators import login_required
 

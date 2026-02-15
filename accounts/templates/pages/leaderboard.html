@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard | Coop Station{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Header -->
+    <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-3 mb-4">
+        <div>
+            <span class="badge badge-brand rounded-pill px-3 py-2">Community-driven</span>
+            <h1 class="mt-3 mb-2 fw-black" style="letter-spacing:-.02em; font-weight: 900;">
+                Top Contributors
+                <span class="text-brand">Leaderboard</span>
+            </h1>
+            <p class="mb-0" style="max-width: 720px;">
+                Here we highlight the most active students based on approved opportunity submissions. The goal is to
+                encourage participation and improve content quality across the platform.
+            </p>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="#" class="btn btn-cta">
+                <i class="bi bi-plus-circle me-2"></i>
+                Submit Opportunity
+            </a>
+            <a href="{% url 'opportunities' %}" class="btn btn-outline-neutral">
+                View Opportunities
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI cards -->
+    <div class="row g-3 g-lg-4">
+        <div class="col-12 col-lg-4">
+            <div class="card rounded-2xl h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="icon-box-sm"><i class="bi bi-people"></i></div>
+                        <span class="badge rounded-pill bg-soft text-brand fw-bold px-3 py-2">This Month</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="h2 fw-black mb-1" style="font-weight: 900;">128</div>
+                        <div class="fw-bold">Active Contributors</div>
+                        <div class="small mt-1">Students who submitted opportunities that were approved.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card rounded-2xl h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="icon-box-sm"><i class="bi bi-shield-check"></i></div>
+                        <span class="badge rounded-pill bg-soft text-success-brand fw-bold px-3 py-2">Verified</span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="h2 fw-black mb-1" style="font-weight: 900;">412</div>
+                        <div class="fw-bold">Approved Submissions</div>
+                        <div class="small mt-1">Submissions that passed review and were approved.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card rounded-2xl h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="icon-box-sm"><i class="bi bi-lightning-charge"></i></div>
+                        <span class="badge rounded-pill bg-soft fw-bold px-3 py-2" style="color: var(--brand-orange);">
+                            Fast impact
+                        </span>
+                    </div>
+                    <div class="mt-3">
+                        <div class="h2 fw-black mb-1" style="font-weight: 900;">3.6×</div>
+                        <div class="fw-bold">Faster Discovery</div>
+                        <div class="small mt-1">Reduce search time through a unified source.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="card rounded-2xl mt-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
+
+                <div class="position-relative flex-grow-1" style="max-width: 520px;">
+                    <i class="bi bi-search search-icon"></i>
+                    <input id="lbSearch" type="text" class="form-control input-icon rounded-xl"
+                        placeholder="Search by student name...">
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn filter-pill" type="button">
+                        <i class="bi bi-funnel me-1"></i>
+                        All
+                    </button>
+                    <button class="btn filter-pill" type="button">
+                        <i class="bi bi-patch-check me-1"></i>
+                        Verified
+                    </button>
+                    <button class="btn filter-pill" type="button">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        This Month
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard table -->
+    <div class="card rounded-2xl mt-3">
+        <div class="card-body p-0">
+            <div class="p-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="fw-black" style="font-weight: 900;">Leaderboard Table</div>
+                    <div class="small">Rank, Student, Approved submissions count.</div>
+                </div>
+                <span class="small">Tip: Later, connect this to real database data.</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="bg-soft">
+                        <tr>
+                            <th class="ps-4">Rank</th>
+                            <th>Student</th>
+                            <th>Approved Submissions</th>
+                            <th class="pe-4 text-end">Badge</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lbBody">
+                        <tr class="op-row">
+                            <td class="ps-4">
+                                <span class="badge rounded-pill text-bg-dark px-3 py-2">#1</span>
+                            </td>
+                            <td class="fw-bold lb-name">Rayan Albaz</td>
+                            <td>
+                                <span class="badge-status badge-active">
+                                    <i class="bi bi-check2-circle"></i> 32
+                                </span>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <span class="badge rounded-pill px-3 py-2"
+                                    style="background: rgba(255,129,71,.16); color:#8a3b12; font-weight:800;">
+                                    Top Contributor
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr class="op-row">
+                            <td class="ps-4">
+                                <span class="badge rounded-pill bg-soft text-brand fw-bold px-3 py-2">#2</span>
+                            </td>
+                            <td class="fw-bold lb-name">Nawaf AlQarni</td>
+                            <td><span class="badge-status badge-applied"><i class="bi bi-star-fill"></i> 21</span></td>
+                            <td class="pe-4 text-end">
+                                <span class="badge rounded-pill badge-brand px-3 py-2">Verified</span>
+                            </td>
+                        </tr>
+
+                        <tr class="op-row">
+                            <td class="ps-4">
+                                <span class="badge rounded-pill bg-soft fw-bold px-3 py-2"
+                                    style="color: var(--brand-orange);">#3</span>
+                            </td>
+                            <td class="fw-bold lb-name">Omar Alomran</td>
+                            <td><span class="badge-status badge-closing"><i class="bi bi-lightning-fill"></i> 17</span>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <span class="badge rounded-pill bg-soft px-3 py-2 fw-bold"
+                                    style="color: var(--brand-orange);">Rising</span>
+                            </td>
+                        </tr>
+
+                        <tr class="op-row">
+                            <td class="ps-4">
+                                <span class="badge rounded-pill bg-soft text-muted fw-bold px-3 py-2">#4</span>
+                            </td>
+                            <td class="fw-bold lb-name">Saleh Almahmoud</td>
+                            <td><span class="badge-status badge-active"><i class="bi bi-check2-circle"></i> 12</span>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <span class="badge rounded-pill bg-soft px-3 py-2 fw-bold">Active</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-4">
+                <div
+                    class="cta-panel rounded-2xl p-4 p-lg-5 d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+                    <div>
+                        <div class="h4 fw-black mb-2" style="font-weight: 900;">Want to be on the leaderboard?</div>
+                        <p class="mb-0" style="max-width: 720px;">
+                            Submit new opportunities, keep the details complete and verifiable, then the moderation team
+                            will approve them and your points will be updated automatically.
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-cta">
+                        <i class="bi bi-send me-2"></i>
+                        Submit now
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple client-side search (demo)
+    const input = document.getElementById("lbSearch");
+    const rows = Array.from(document.querySelectorAll("#lbBody tr"));
+
+    if (input) {
+        input.addEventListener("input", () => {
+            const q = input.value.trim().toLowerCase();
+            rows.forEach(row => {
+                const name = row.querySelector(".lb-name")?.textContent?.toLowerCase() || "";
+                row.style.display = name.includes(q) ? "" : "none";
+            });
+        });
+    }
+</script>
+{% endblock %}
