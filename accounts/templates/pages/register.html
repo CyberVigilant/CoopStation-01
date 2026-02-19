@@ -1,28 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Register | Coop Station{% endblock %}
-
-{% block content %}
-
+{% block header %}
 <header class="nav-dark sticky-top">
   <div class="container py-3 d-flex align-items-center">
-
-    <!-- Left -->
     <a class="d-flex align-items-center gap-2 text-decoration-none" href="{% url 'home' %}">
       <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
         <span class="fw-bold">CS</span>
       </div>
       <span class="fw-extrabold text-white fs-5" style="font-weight: 900;">Coop Station</span>
     </a>
-
-    <!-- Center -->
-    <div class="flex-grow-1 d-flex justify-content-center">
-      <a href="{% url 'home' %}" class="nav-link-dark">
-        Home
-      </a>
-    </div>
-
   </div>
 </header>
+{% endblock %}
+{% block title %}Register | Coop Station{% endblock %}
+
+{% block content %}
+
 
 
 <main class="min-vh-100 bg-soft py-5">

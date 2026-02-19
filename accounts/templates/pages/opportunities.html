@@ -23,32 +23,188 @@
 
             <!-- Filter pills -->
             <div class="d-flex flex-wrap gap-2 align-items-center">
-                <button class="btn filter-pill d-inline-flex align-items-center gap-2">
-                    <i class="bi bi-mortarboard"></i> Major <i class="bi bi-chevron-down"></i>
-                </button>
 
-                <button class="btn filter-pill d-inline-flex align-items-center gap-2">
-                    <i class="bi bi-geo-alt"></i> Location <i class="bi bi-chevron-down"></i>
-                </button>
+                <!-- Major (multi-select via partial) -->
+                <div class="dropdown">
+                    <button class="btn filter-pill d-inline-flex align-items-center gap-2 dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-mortarboard"></i>
+                        {% if selected_category_ids and selected_category_ids|length == 1 and selected_category %}
+                        {{ selected_category.name }}
+                        {% elif selected_category_ids and selected_category_ids|length > 1 %}
+                        {{ selected_category_ids|length }} Majors
+                        {% else %}
+                        Major
+                        {% endif %}
+                    </button>
 
-                <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                    <div class="dropdown-menu p-0 shadow" style="min-width: 320px;">
+                        <div style="max-height: 320px; overflow:auto;">
+                            <div class="list-group list-group-flush w-100">
+                                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                    href="{{ clear_majors_url }}" style="border:0;">
+                                    <span>Any</span>
+                                    <span class="text-secondary small">Clear majors</span>
+                                </a>
+                                {% include "pages/partials/_major_filter.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location (Region -> City) -->
+                <div class="dropdown">
+                    <button class="btn filter-pill d-inline-flex align-items-center gap-2 dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-geo-alt"></i>
+                        {% if selected_city %}{{ selected_city }}{% elif selected_region %}{{ selected_region }}{% else
+                        %}Location{% endif %}
+                    </button>
+
+                    <div class="dropdown-menu p-0 shadow" style="width: 520px;">
+                        <div class="d-flex" style="min-height: 280px;">
+
+                            <!-- Regions -->
+                            <div class="border-end" style="width: 45%;">
+                                <a class="dropdown-item fw-semibold" style="border:0;"
+                                    href="{{ clear_location_url }}">Any</a>
+                                <div class="dropdown-divider my-0"></div>
+                                <div id="regionList" class="list-group list-group-flush rounded-0"></div>
+                            </div>
+
+                            <!-- Cities -->
+                            <div style="width: 55%;">
+                                <div class="px-3 py-2 text-secondary small" id="cityHeader">Choose a region</div>
+                                <div id="cityList" class="list-group list-group-flush rounded-0"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company (placeholder) -->
+                <button class="btn filter-pill d-inline-flex align-items-center gap-2" type="button">
                     <i class="bi bi-building"></i> Company <i class="bi bi-chevron-down"></i>
                 </button>
 
-                <button class="btn filter-pill d-inline-flex align-items-center gap-2">
+                <!-- Deadline (placeholder) -->
+                <button class="btn filter-pill d-inline-flex align-items-center gap-2" type="button">
                     <i class="bi bi-calendar-event"></i> Deadline <i class="bi bi-chevron-down"></i>
                 </button>
 
                 <div class="vr mx-2"></div>
 
-                <button class="btn fw-bold text-brand">
-                    Clear All
-                </button>
+                <a class="btn fw-bold text-brand" href="{{ clear_all_url }}">Clear All</a>
+
             </div>
+
+            {# Provide JSON safely even if view doesn't pass location_menu yet #}
+            {% if location_menu %}
+            {{ location_menu|json_script:"location-data" }}
+            {% else %}
+            <script id="location-data" type="application/json">{}</script>
+            {% endif %}
+
+            <script>
+                (function () {
+                    const dataEl = document.getElementById('location-data');
+                    if (!dataEl) return;
+
+                    let locationData = {};
+                    try {
+                        locationData = JSON.parse(dataEl.textContent || '{}') || {};
+                    } catch (e) {
+                        locationData = {};
+                    }
+
+                    const regionList = document.getElementById('regionList');
+                    const cityList = document.getElementById('cityList');
+                    const cityHeader = document.getElementById('cityHeader');
+                    if (!regionList || !cityList || !cityHeader) return;
+
+                    const selectedRegion = "{{ selected_region|default_if_none:'' }}";
+                    const selectedCity = "{{ selected_city|default_if_none:'' }}";
+
+                    // Keep majors in location links (multi-select)
+                    const majorsQS = "{{ majors_qs|default:'' }}"; // already starts with & when present
+
+                    function makeHref(params) {
+                        const qs = params.toString();
+                        return qs ? (`?${qs}${majorsQS}`) : (`?${majorsQS.replace(/^&/, '')}`);
+                    }
+
+                    function renderCities(region) {
+                        cityList.innerHTML = '';
+                        if (!region || !locationData[region]) {
+                            cityHeader.textContent = 'Choose a region';
+                            return;
+                        }
+
+                        cityHeader.textContent = region;
+
+                        // Region-only option
+                        const regionOnly = document.createElement('a');
+                        regionOnly.className = 'list-group-item list-group-item-action text-secondary';
+                        const paramsRegion = new URLSearchParams();
+                        paramsRegion.set('region', region);
+                        regionOnly.href = makeHref(paramsRegion);
+                        regionOnly.textContent = 'Any city in this region';
+                        cityList.appendChild(regionOnly);
+
+                        // City options with counts
+                        (locationData[region] || []).forEach(function (row) {
+                            const city = row.city;
+                            const count = row.count;
+
+                            const a = document.createElement('a');
+                            a.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+
+                            const paramsCity = new URLSearchParams();
+                            paramsCity.set('region', region);
+                            paramsCity.set('city', city);
+                            a.href = makeHref(paramsCity);
+
+                            a.innerHTML = `<span>${city}</span><span class="text-primary fw-semibold">${count}</span>`;
+                            if (selectedCity && city === selectedCity) {
+                                a.classList.add('active');
+                            }
+                            cityList.appendChild(a);
+                        });
+                    }
+
+                    // Render regions
+                    regionList.innerHTML = '';
+                    Object.keys(locationData).forEach(function (region) {
+                        const a = document.createElement('a');
+                        a.href = '#';
+                        a.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                        a.innerHTML = `<span>${region}</span><i class="bi bi-chevron-right"></i>`;
+
+                        if (selectedRegion && region === selectedRegion) {
+                            a.classList.add('active');
+                        }
+
+                        a.addEventListener('mouseenter', function () { renderCities(region); });
+                        a.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            renderCities(region);
+                        });
+
+                        regionList.appendChild(a);
+                    });
+
+                    // Default panel
+                    if (selectedRegion) {
+                        renderCities(selectedRegion);
+                    } else {
+                        const firstRegion = Object.keys(locationData)[0];
+                        if (firstRegion) renderCities(firstRegion);
+                    }
+                })();
+            </script>
 
         </div>
     </div>
-
     <!-- Table -->
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="table-responsive">
@@ -65,162 +221,51 @@
                 </thead>
 
                 <tbody>
-                    <!-- Row 1 -->
+                    {% for opp in opportunities %}
                     <tr class="op-row">
                         <td class="px-4 py-3">
                             <div class="d-flex align-items-center gap-2">
                                 <div class="icon-box-sm"><i class="bi bi-building"></i></div>
-                                <span class="fw-semibold">STC</span>
+                                <span class="fw-semibold">{{ opp.company|default:"-" }}</span>
                             </div>
                         </td>
 
                         <td class="px-4 py-3">
-                            <div class="fw-bold">Software Engineering Co-op</div>
-                            <div class="text-secondary small">Full-time • 4 Months</div>
+                            <div class="fw-bold">{{ opp.title }}</div>
+                            <div class="text-secondary small">{{ opp.major|default:"—" }}</div>
                         </td>
 
-                        <td class="px-4 py-3 text-secondary">Remote</td>
-                        <td class="px-4 py-3 text-secondary">Dec 15, 2023</td>
+                        <td class="px-4 py-3 text-secondary">{{ opp.location|default:"-" }}</td>
+
+                        <td class="px-4 py-3 text-secondary">
+                            {% if opp.deadline %}{{ opp.deadline|date:"M d, Y" }}{% else %}-{% endif %}
+                        </td>
 
                         <td class="px-4 py-3">
-                            <span class="badge-status badge-active">Active</span>
+                            {% if opp.status == "open" %}
+                            <span class="badge-status badge-active">Open</span>
+                            {% elif opp.status == "closed" %}
+                            <span class="badge-status badge-applied">Closed</span>
+                            {% else %}
+                            <span class="badge-status badge-closing">{{ opp.status }}</span>
+                            {% endif %}
                         </td>
 
                         <td class="px-4 py-3">
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
+                                <button class="btn btn-sm btn-outline-neutral" type="button" title="Bookmark">
                                     <i class="bi bi-bookmark"></i>
                                 </button>
-                                <button class="btn btn-view">View Details</button>
+                                <a class="btn btn-view" href="{{ opp.source_link }}" target="_blank" rel="noopener">Open
+                                    Link</a>
                             </div>
                         </td>
                     </tr>
-
-                    <!-- Row 2 -->
-                    <tr class="op-row">
-                        <td class="px-4 py-3">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="icon-box-sm"><i class="bi bi-bank"></i></div>
-                                <span class="fw-semibold">Elm</span>
-                            </div>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="fw-bold">Marketing Co-op</div>
-                            <div class="text-secondary small">Part-time • 8 Months</div>
-                        </td>
-
-                        <td class="px-4 py-3 text-secondary">New York, NY</td>
-                        <td class="px-4 py-3 fw-semibold" style="color:#8a3b12;">Nov 30, 2023</td>
-
-                        <td class="px-4 py-3">
-                            <span class="badge-status badge-closing">Closing Soon</span>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-neutral" title="Bookmarked"
-                                    style="border-color: rgba(255,193,7,.55) !important;">
-                                    <i class="bi bi-bookmark-fill" style="color:#f0b429;"></i>
-                                </button>
-                                <button class="btn btn-view">View Details</button>
-                            </div>
-                        </td>
+                    {% empty %}
+                    <tr>
+                        <td class="px-4 py-4 text-secondary" colspan="6">No opportunities found.</td>
                     </tr>
-
-                    <!-- Row 3 -->
-                    <tr class="op-row">
-                        <td class="px-4 py-3">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="icon-box-sm"><i class="bi bi-graph-up"></i></div>
-                                <span class="fw-semibold">BCG</span>
-                            </div>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="fw-bold">Data Analysis Co-op</div>
-                            <div class="text-secondary small">Full-time • 4 Months</div>
-                        </td>
-
-                        <td class="px-4 py-3 text-secondary">San Francisco, CA</td>
-                        <td class="px-4 py-3 text-secondary">Jan 10, 2024</td>
-
-                        <td class="px-4 py-3">
-                            <span class="badge-status badge-active">Active</span>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </button>
-                                <button class="btn btn-view">View Details</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 4 -->
-                    <tr class="op-row">
-                        <td class="px-4 py-3">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="icon-box-sm"><i class="bi bi-brush"></i></div>
-                                <span class="fw-semibold">PIF</span>
-                            </div>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="fw-bold">UX Design Co-op</div>
-                            <div class="text-secondary small">Full-time • 6 Months</div>
-                        </td>
-
-                        <td class="px-4 py-3 text-secondary">Austin, TX</td>
-                        <td class="px-4 py-3 text-secondary">Dec 01, 2023</td>
-
-                        <td class="px-4 py-3">
-                            <span class="badge-status badge-active">Active</span>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </button>
-                                <button class="btn btn-view">View Details</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Row 5 -->
-                    <tr class="op-row">
-                        <td class="px-4 py-3">
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="icon-box-sm"><i class="bi bi-tools"></i></div>
-                                <span class="fw-semibold">SITE</span>
-                            </div>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="fw-bold">Project Coordination Co-op</div>
-                            <div class="text-secondary small">Full-time • 4 Months</div>
-                        </td>
-
-                        <td class="px-4 py-3 text-secondary">Chicago, IL</td>
-                        <td class="px-4 py-3 text-secondary">Dec 20, 2023</td>
-
-                        <td class="px-4 py-3">
-                            <span class="badge-status badge-applied">Applied</span>
-                        </td>
-
-                        <td class="px-4 py-3">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-sm btn-outline-neutral" title="Bookmark">
-                                    <i class="bi bi-bookmark"></i>
-                                </button>
-                                <button class="btn btn-view">View Details</button>
-                            </div>
-                        </td>
-                    </tr>
-
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -228,28 +273,62 @@
         <!-- Pagination -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 px-4 py-3 border-top"
             style="border-color: var(--border) !important;">
-            <div class="text-secondary small">Showing 1 to 5 of 258 opportunities</div>
 
+            <div class="text-secondary small">
+                {% if page_obj.paginator.count %}
+                Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }}
+                opportunities
+                {% else %}
+                No opportunities
+                {% endif %}
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
             <nav aria-label="Pagination">
                 <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+
+                    <!-- Prev -->
+                    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                        {% if page_obj.has_previous %}
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{{ extra_qs|default:'' }}"><i
+                                class="bi bi-chevron-left"></i></a>
+                        {% else %}
+                        <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                        {% endif %}
                     </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#"
-                            style="background:var(--brand-blue); border-color:var(--brand-blue);">1</a>
+
+                    <!-- Numbers (with ellipsis) -->
+                    {% for p in page_range %}
+                    {% if p is None %}
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                    {% else %}
+                    <li class="page-item {% if page_obj.number == p %}active{% endif %}">
+                        {% if page_obj.number == p %}
+                        <span class="page-link" style="background:var(--brand-blue); border-color:var(--brand-blue);">{{
+                            p }}</span>
+                        {% else %}
+                        <a class="page-link" href="?page={{ p }}{{ extra_qs|default:'' }}">{{ p }}</a>
+                        {% endif %}
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">…</a></li>
-                    <li class="page-item"><a class="page-link" href="#">52</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                    {% endif %}
+                    {% endfor %}
+
+                    <!-- Next -->
+                    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                        {% if page_obj.has_next %}
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{{ extra_qs|default:'' }}"><i
+                                class="bi bi-chevron-right"></i></a>
+                        {% else %}
+                        <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                        {% endif %}
                     </li>
+
                 </ul>
             </nav>
+            {% endif %}
+
         </div>
 
     </div>
-
-</div>
-{% endblock %}
+    {% endblock %}
