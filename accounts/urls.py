@@ -10,4 +10,6 @@ urlpatterns = [
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     path("opportunities/", views.opportunities, name="opportunities"),
     path("leaderboard/", views.leaderboard, name="leaderboard"),
+    path("bookmarks/", views.bookmarks, name="bookmarks"),
+    path("profile/", views.profile, name="profile"),
 ]

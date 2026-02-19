@@ -2,27 +2,6 @@
 {% block title %}Coop Station - Find Your Co-op Opportunity{% endblock %}
 {% block content %}
 
-<!-- Header (dark like your screenshot) -->
-<header class="nav-dark sticky-top">
-  <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
-
-    <!-- Logo -->
-    <a class="d-flex align-items-center gap-2 text-decoration-none" href="{% url 'home' %}">
-      <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
-        <span class="fw-bold">CS</span>
-      </div>
-      <span class="fw-extrabold text-white fs-5" style="font-weight: 900;">Coop Station</span>
-    </a>
-
-    <!-- Auth buttons -->
-    <div class="d-flex align-items-center gap-2">
-      <a class="btn btn-sm btn-login-orange px-3" href="{% url 'register' %}">Login</a>
-      <a class="btn btn-sm btn-cta px-3" href="{% url 'register' %}">Create Account</a>
-    </div>
-
-  </div>
-</header>
-
 <!-- Hero -->
 <section class="py-5 bg-soft">
   <div class="container py-3">
@@ -145,54 +124,5 @@
     </div>
   </div>
 </section>
-
-<!-- Footer (near-black) -->
-<footer class="footer-dark">
-  <div class="container py-5">
-    <div class="row g-4">
-
-      <div class="col-lg-5">
-        <div class="d-flex align-items-center gap-2 mb-3">
-          <div class="logo-pill rounded-3 d-flex align-items-center justify-content-center text-white">
-            <span class="fw-bold">CS</span>
-          </div>
-          <span class="fw-bold fs-5 text-white">Coop Station</span>
-        </div>
-
-        <p class="footer-text mb-0" style="max-width: 26rem;">
-          Empowering students to discover and secure their ideal co-op opportunities through centralized
-          search, AI validation, and community collaboration.
-        </p>
-      </div>
-
-      <div class="col-6 col-lg-3">
-        <h6 class="footer-title mb-3">Platform</h6>
-        <ul class="list-unstyled d-grid gap-2 mb-0">
-          <li><a class="footer-link" href="#">Browse Opportunities</a></li>
-          <li><a class="footer-link" href="#">My Bookmarks</a></li>
-          <li><a class="footer-link" href="#">Leaderboard</a></li>
-          <li><a class="footer-link" href="#">Submit Opportunity</a></li>
-        </ul>
-      </div>
-
-      <div class="col-6 col-lg-3">
-        <h6 class="footer-title mb-3">Support</h6>
-        <ul class="list-unstyled d-grid gap-2 mb-0">
-          <li><a class="footer-link" href="#">Help Center</a></li>
-          <li><a class="footer-link" href="{% url 'contact_us' %}">Contact Us</a></li>
-          <li><a class="footer-link" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
-          <li><a class="footer-link" href="{% url 'terms_of_service' %}">Terms of Service</a></li>
-        </ul>
-      </div>
-
-    </div>
-
-    <hr class="footer-divider my-4">
-
-    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
-      <small class="footer-muted">© 2026 Coop Station. All Rights Reserved.</small>
-    </div>
-  </div>
-</footer>
 
 {% endblock %}

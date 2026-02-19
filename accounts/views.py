@@ -63,6 +63,12 @@ def contact_us(request):
 def terms_of_service(request):
     return render(request, "pages/terms-of-service.html")
 
+def bookmarks(request):
+    return render(request, "pages/bookmarks.html")
+
+def profile(request):
+    return render(request, "pages/profile.html")
+
 def leaderboard(request):
     return render(request, "pages/leaderboard.html")
 def privacy_policy(request):
